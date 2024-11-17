@@ -1,4 +1,14 @@
 package com.backend.projet3OC.service;
 
-public class RentalService {
+import com.backend.projet3OC.dto.RentalCreateDTO;
+import com.backend.projet3OC.dto.RentalResponseDTO;
+import com.backend.projet3OC.dto.RentalUpdateDTO;
+import java.util.List;
+
+public interface RentalService {
+    void createRental(RentalCreateDTO rentalDTO);
+    List<RentalResponseDTO> getAllRentals();
+    RentalResponseDTO getRentalById(Long id);
+    void updateRental(Long id, RentalUpdateDTO rentalUpdateDTO);
+
 }

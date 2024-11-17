@@ -1,11 +1,17 @@
 package com.backend.projet3OC.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.util.Date;
+
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
 
@@ -21,4 +27,14 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Date created_at;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Date updated_at;
+
+
 }

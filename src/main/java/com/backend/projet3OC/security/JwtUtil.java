@@ -1,13 +1,10 @@
 package com.backend.projet3OC.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
@@ -35,6 +32,10 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -44,7 +45,7 @@ public class JwtUtil {
     }
 
     public boolean isTokenValid(String token, String username) {
-        final String tokenUsername = extractClaims(token).getSubject();
+        final String tokenUsername = extractUsername(token);
         return (tokenUsername.equals(username) && !isTokenExpired(token));
     }
 

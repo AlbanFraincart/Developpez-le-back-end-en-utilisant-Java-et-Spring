@@ -1,9 +1,11 @@
 package com.backend.projet3OC.controller;
 
-import com.backend.projet3OC.model.LoginRequest;
-import com.backend.projet3OC.model.RegisterRequest;
-import com.backend.projet3OC.model.User;
+import com.backend.projet3OC.dto.LoginRequest;
+import com.backend.projet3OC.dto.RegisterRequest;
+import com.backend.projet3OC.dto.UserResponseDTO;
 import com.backend.projet3OC.service.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,27 +24,26 @@ public class AuthController {
         this.authService = authService;
     }
 
-
-    @PostMapping("/email")
-    public Map<String, String> login(@Valid @RequestBody LoginRequest loginRequest) {
-        String token = authService.login(loginRequest.getLogin(), loginRequest.getPassword());
-
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequest loginRequest) {
+        String token = authService.login(loginRequest);
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
-        return response;
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
-    public Map<String, String> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        User user = new User();
-        user.setEmail(registerRequest.getEmail());
-        user.setName(registerRequest.getName());
-        user.setPassword(registerRequest.getPassword());
-
-        authService.register(user);
-
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        authService.register(registerRequest);
         Map<String, String> response = new HashMap<>();
         response.put("message", "success");
-        return response;
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getCurrentUser() {
+        UserResponseDTO user = authService.getCurrentUser();
+        return ResponseEntity.ok(user);
+    }
+
 }

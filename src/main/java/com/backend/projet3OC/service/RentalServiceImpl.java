@@ -5,6 +5,8 @@ import com.backend.projet3OC.dto.RentalResponseDTO;
 import com.backend.projet3OC.dto.RentalUpdateDTO;
 import com.backend.projet3OC.dto.UserResponseDTO;
 
+import com.backend.projet3OC.exception.RentalNotFoundException;
+import com.backend.projet3OC.exception.UnauthorizedException;
 import com.backend.projet3OC.model.Rental;
 import com.backend.projet3OC.repository.RentalRepository;
 import org.springframework.stereotype.Service;
@@ -74,7 +76,7 @@ public class RentalServiceImpl implements RentalService {
         // - Throws an exception if no record is found.
         // - Converts the retrieved entity into a response DTO.
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+                .orElseThrow(() -> new RentalNotFoundException("Rental not found with id: " + id));
         return convertToResponseDTO(rental);
     }
 
@@ -82,12 +84,12 @@ public class RentalServiceImpl implements RentalService {
     public void updateRental(Long id, RentalUpdateDTO rentalUpdateDTO) {
         // retrieve existing rental
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+                .orElseThrow(() -> new RentalNotFoundException("Rental not found with id: " + id));
 
         // verify current user is owner
         UserResponseDTO currentUser = authService.getCurrentUser();
         if (!rental.getOwner_id().equals(currentUser.getId())) {
-            throw new RuntimeException("Unauthorized to update this rental");
+            throw new UnauthorizedException("Unauthorized to update this rental");
         }
 
         // update fields

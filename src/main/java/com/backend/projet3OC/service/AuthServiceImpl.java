@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     logger.warn("User not found with email: {}", email);
-                    return new InvalidCredentialsException();
+                    return new InvalidCredentialsException("Invalid email or password");
                 });
 
         if (passwordEncoder.matches(password, user.getPassword())) {
@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
             return token;
         } else {
             logger.warn("Password mismatch for user {}", email);
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("Invalid email or password");
         }
     }
 
@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             logger.warn("Attempt to access /me without authentication");
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("User is not authenticated");
         }
 
         String email = (String) authentication.getPrincipal();

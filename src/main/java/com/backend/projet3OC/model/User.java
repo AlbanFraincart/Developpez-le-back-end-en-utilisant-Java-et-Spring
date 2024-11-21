@@ -1,5 +1,4 @@
 package com.backend.projet3OC.model;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 
 @Entity
@@ -36,5 +37,6 @@ public class User {
     @Column(nullable = false)
     private Date updated_at;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> messages = new ArrayList<>();
 }

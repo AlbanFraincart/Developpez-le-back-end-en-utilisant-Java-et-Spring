@@ -21,6 +21,8 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+// intercept http request to extract and validate jwt in the header authorization
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -42,15 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        logger.info("4 token={}, username={}", token, username);
 
         try {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 token = authorizationHeader.substring(7);
                 username = jwtUtil.extractUsername(token);
-                logger.info("Extracted username from token: {}", username);
-                logger.info("4aa token={}, username={}", token, username);
-
             } else {
                 logger.warn("Authorization header missing or does not start with Bearer");
             }
@@ -61,9 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    logger.info("User {} authenticated successfully", username);
-                    logger.info("4bbb token={}, username={}", token, username);
-
                 } else {
                     logger.warn("Invalid token for user {}", username);
                 }
@@ -74,8 +69,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Token has expired");
             return;
         } catch (JwtException e) {
-            logger.info("5 token={}, username={}", token, username);
-
             logger.error("Invalid token: {}", e.getMessage());
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
             return;

@@ -3,6 +3,8 @@ package com.backend.projet3OC.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
+
+// allow or restrain requests from various origins
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 

@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+//configure parameters for uploading files
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

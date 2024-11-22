@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
+
+//handle authentication endpoints like login, register and me
 @RestController
 @RequestMapping("/api/auth")
 @Validated

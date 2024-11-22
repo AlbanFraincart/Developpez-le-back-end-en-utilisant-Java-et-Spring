@@ -5,6 +5,7 @@ import com.backend.projet3OC.dto.RentalResponseDTO;
 import com.backend.projet3OC.dto.RentalUpdateDTO;
 import java.util.List;
 
+//define crud methods for rentals
 public interface RentalService {
     void createRental(RentalCreateDTO rentalDTO);
     List<RentalResponseDTO> getAllRentals();

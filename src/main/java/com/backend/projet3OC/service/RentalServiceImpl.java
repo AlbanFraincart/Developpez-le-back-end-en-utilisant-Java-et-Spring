@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// crud implementation for rentals
 @Service
 public class RentalServiceImpl implements RentalService {
 

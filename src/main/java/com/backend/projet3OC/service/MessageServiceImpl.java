@@ -9,20 +9,15 @@ import com.backend.projet3OC.model.User;
 import com.backend.projet3OC.repository.MessageRepository;
 import com.backend.projet3OC.repository.RentalRepository;
 import com.backend.projet3OC.repository.UserRepository;
-import com.backend.projet3OC.security.JwtAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+//messages implementation to handle file storage
 @Service
 public class MessageServiceImpl implements MessageService {
-
-    private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
-
 
     private final MessageRepository messageRepository;
     private final RentalRepository rentalRepository;
@@ -38,23 +33,19 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void createMessage(MessageCreateDTO messageCreateDTO) {
-        logger.info("Creating message for rental ID: {}", messageCreateDTO.getRental_id());
         Message message = new Message();
         message.setMessage(messageCreateDTO.getMessage());
 
         Rental rental = rentalRepository.findById(messageCreateDTO.getRental_id())
                 .orElseThrow(() -> new RuntimeException("Rental not found with id: " + messageCreateDTO.getRental_id()));
-        logger.info("Rental found: {}", rental.getName());
         message.setRental(rental);
 
         UserResponseDTO currentUserDTO = authService.getCurrentUser();
         User user = userRepository.findById(currentUserDTO.getId())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + currentUserDTO.getId()));
-        logger.info("User found: {}", user.getEmail());
         message.setUser(user);
 
         messageRepository.save(message);
-        logger.info("Message saved with ID: {}", message.getId());
     }
 
 

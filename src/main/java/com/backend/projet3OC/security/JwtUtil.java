@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+// methods to generate, extract and validate jwt
 @Component
 public class JwtUtil {
 

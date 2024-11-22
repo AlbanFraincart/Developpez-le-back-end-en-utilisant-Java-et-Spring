@@ -12,6 +12,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// configure security parameters of spring security. Which road is protected or not
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+//methods implementations for authentication and registration
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -34,7 +35,6 @@ public class AuthServiceImpl implements AuthService {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
-        logger.info("Attempting to authenticate user with email: {}", email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     logger.warn("User not found with email: {}", email);
@@ -63,7 +63,6 @@ public class AuthServiceImpl implements AuthService {
         user.setName(registerRequest.getName());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         userRepository.save(user);
-        logger.info("User registered successfully with email: {}", registerRequest.getEmail());
     }
 
     @Override
@@ -75,7 +74,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String email = (String) authentication.getPrincipal();
-        logger.info("Fetching current user details for email: {}", email);
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
@@ -83,7 +81,6 @@ public class AuthServiceImpl implements AuthService {
                     return new RuntimeException("User not found");
                 });
 
-        logger.info("User found: {}", email);
         return convertToUserResponseDTO(user);
     }
 
@@ -94,7 +91,6 @@ public class AuthServiceImpl implements AuthService {
         dto.setEmail(user.getEmail());
         dto.setCreatedAt(user.getCreated_at());
         dto.setUpdatedAt(user.getUpdated_at());
-        logger.info("Converted User to UserResponseDTO for user: {}", user.getEmail());
         return dto;
     }
 }

@@ -19,3 +19,5 @@ Installez les dépendances avec Maven : Copier le code mvn install
 Démarrez le backend Spring Boot : Copier le code mvn spring-boot:run L'API sera accessible sur http://localhost:3001.
 
 Base de données Le backend est configuré pour utiliser MySQL. Veillez à configurer votre base de données et à mettre à jour les informations de connexion dans le fichier application.properties du backend.
+
+Url de swagger pour la documentation : http://localhost:3001/swagger-ui/index.html#/ 
